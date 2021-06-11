@@ -28,4 +28,10 @@ __NB__: Pour lancer le serveur symfony, utiliser la commande `symfony serve`.
  > Commit et push sur notre repository GIT.
 
 # CRÉATION D'UN FORMULAIRE DE LOGIN:
+ - À l'aide de la commande `symfony console make:auth` on créé la classe LoginFormAuthenticator et le SecurityController.
+ - On modifie la vue correspondante dans le dossier templates comme on le souhaite.
 
+# CRÉATION D'UN ACCOUNT CONTROLLER:
+ - On veut gérer l'accès à certaines pages et le limiter seulement aux membres connectés.
+### Fonctionnalité modifier mot de passe:
+ - On créé un PasswordController et un nouveau formulaire ChangePasswordType (relié à User), que l'on intègre à la vue `password.html.twig`.

@@ -13,56 +13,50 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class RegisterType extends AbstractType
+class ChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('email', EmailType::class, [
+                'disabled' => true,
+                'label' => 'My email'
+            ])
             ->add('firstname', TextType::class, [
-                'label' => 'First name',
-                'attr' => [
-                    'placeholder' => 'Please insert your first name here'
-                ]
+                'disabled' => true,
+                'label' => 'My first name'
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Last name',
+                'disabled' => true,
+                'label' => 'My last name'
+            ])
+            ->add('old_password', PasswordType::class, [
+                'label' => 'My password',
+                'mapped' => false,
                 'attr' => [
-                    'placeholder' => 'Please insert your last name here'
+                    'placeholder' => 'Please enter your current password'
                 ]
             ])
-            ->add('email', EmailType::class, [
-                'label' => 'E-mail',
-                'attr' => [
-                    'placeholder' => 'Please insert your e-mail address here'
-                ]
-            ])
-            ->add('password', RepeatedType::class, [
+            ->add('new_password', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'mapped' => false,
                 'invalid_message' => 'The password and confirmation do not match.',
-                'label' => 'Password',
+                'label' => 'New password',
                 'required' => true,
                 'constraints' => new Length([
                     'min' => 6,
                     'max' => 30
                 ]),
-                'first_options' => ['label' => 'Password', 'attr' => [
-                    'placeholder' => 'Enter a secure password'
+                'first_options' => ['label' => 'New password', 'attr' => [
+                    'placeholder' => 'Enter a new secure password'
                 ]],
-                'second_options' => ['label' => 'Confirm password', 'attr' => [
-                    'placeholder' => 'Please re-enter your password'
+                'second_options' => ['label' => 'Confirm new password', 'attr' => [
+                    'placeholder' => 'Please re-enter your new password'
                 ]],
             ])
-            // ->add('password_confirm', PasswordType::class, [
-            //     'label' => 'Password confirmation',
-            //     'mapped' => false,
-            //     'attr' => [
-            //         'placeholder' => 'Please re-enter your password'
-            //     ]
-            // ])
             ->add('submit', SubmitType::class, [
                 'label' => 'SUBMIT'
-            ])
-            ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

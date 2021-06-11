@@ -32,6 +32,8 @@
 		</style>
 		<!-- Custom styles for this template -->
 		<link href="{{ asset('assets/css/carousel.css') }}" rel="stylesheet">
+		<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+
 	</head>
 	<body>
 		<header>
@@ -50,10 +52,11 @@
 							</a>
 						</li>
 					</ul>
-					<form class="form-inline mt-2 mt-md-0">
-						<input class="form-control mr-sm-2" type="text" placeholder="Votre recherche..." aria-label="Search">
-						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
-					</form>
+					{% if app.user %}
+					<a href="{{ path('account') }}">My account</a> | <a href="{{ path('app_logout') }}">Sign out</a>
+					{% else %}
+					<a href="{{ path('app_login') }}">Sign in</a> | <a href="{{ path('signup') }}">Sign up</a>
+					{% endif %}
 				</div>
 			</nav>
 		</header>
