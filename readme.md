@@ -35,3 +35,8 @@ __NB__: Pour lancer le serveur symfony, utiliser la commande `symfony serve`.
  - On veut gérer l'accès à certaines pages et le limiter seulement aux membres connectés.
 ### Fonctionnalité modifier mot de passe:
  - On créé un PasswordController et un nouveau formulaire ChangePasswordType (relié à User), que l'on intègre à la vue `password.html.twig`.
+ > Commit et push sur notre repository GIT.
+
+# INSTALLATION DE EASYADMIN:
+ - On installe le bundle easyadmin de symfony avec la commande `composer require easycorp/easyadmin-bundle`
+ - On génère notre dashboard avec `symfony console make:admin:dashboard`, puis ensuite on utilise la commande `symfony console make:admin:crud` pour avoir un nouveau controller.

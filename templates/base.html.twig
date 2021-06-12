@@ -47,16 +47,28 @@
 				<div class="collapse navbar-collapse" id="navbarCollapse">
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item active">
-							<a class="nav-link" href="{{ path('home') }}">Home
-								<span class="sr-only">(current)</span>
-							</a>
+							<a class="nav-link" href="#">Products</a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="#">About us</a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Contact us</a>
 						</li>
 					</ul>
-					{% if app.user %}
-					<a href="{{ path('account') }}">My account</a> | <a href="{{ path('app_logout') }}">Sign out</a>
-					{% else %}
-					<a href="{{ path('app_login') }}">Sign in</a> | <a href="{{ path('signup') }}">Sign up</a>
-					{% endif %}
+					<div class="navbar-item-custom">
+						{% if app.user %}
+							<a href="{{ path('account') }}">My account
+								<small>({{ app.user.firstname }})</small>
+							</a>
+							|
+							<a href="{{ path('app_logout') }}">Sign out</a>
+						{% else %}
+							<a href="{{ path('app_login') }}">Sign in</a>
+							|
+							<a href="{{ path('signup') }}">Sign up</a>
+						{% endif %}
+					</div>
 				</div>
 			</nav>
 		</header>
@@ -121,7 +133,7 @@
 
 
 			<!-- Marketing messaging and featurettes
-												    ================================================== -->
+																											    ================================================== -->
 			<!-- Wrap the rest of the page in another container to center all the content. -->
 
 			<div class="container marketing {% if block('carousel') is not defined%}mt-5{% endif %}"> {% block content %}{% endblock %}
@@ -130,14 +142,16 @@
 				<!-- /.container -->
 
 				<!-- FOOTER -->
-				<footer class="container">
+				<footer class="footer-custom">
 					<p class="float-right">
 						<a href="#">Back to top</a>
 					</p>
-					<p>&copy; 2017-2020 Company, Inc. &middot;
-						<a href="#">Privacy</a>
-						&middot;
-						<a href="#">Terms</a>
+					<p>&copy; 2017-2020 The French Boutique<br>
+						<small>
+							100% made in France<br>
+							<a href="#">Privacy</a>
+							<a href="#">Terms</a>
+						</small>
 					</p>
 				</footer>
 			</main>
