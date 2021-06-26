@@ -128,5 +128,44 @@ class ProductsController extends AbstractController
  > Commit et push sur notre repository GIT.
 
 # CRÉATION DU PANIER:
+ - On créé une nouvelle classe `Cart.php` dans notre dossier Classes. Celle-ci permettra à l'utilisateur de créer un panier de produits.
+ - Afin de rediriger l'utilisateur vers son panier lors de l'ajout d'un nouveau produit, on crée un nouveau CartController.
+ - On a donc une nouvelle vue index.html.twig dans laquelle on renvoie le récapitulatif du panier de l'utilisateur.
+ - Afin de pouvoir avoir multiples articles dans le panier, on rajoute le code suivant dans `Cart.php`:
+```php
+public function getFull()
+  {
+    $cartComplete = [];
 
+    if ($this->get()) {
+        foreach ($this->get() as $id => $quantity) {
+          $product_object = $this->em->getRepository(Products::class)->findOneBy(['id' => $id]);
+          
+          // Preventing users from adding fake product IDs to their carts via the URL.
+          if(!$product_object) {
+            $this->delete($id);
+            continue;
+          }
+          
+          $cartComplete[] = [
+              'product' => $product_object,
+              'quantity' => $quantity
+          ];
+        }
+    }
 
+    return $cartComplete;
+  }
+```
+
+ puis dans CartController:
+```php
+    #[Route('/cart', name: 'cart')]
+    public function index(Cart $cart): Response
+    {
+        return $this->render('cart/index.html.twig', [
+            'cart' => $cart->getFull()
+        ]);
+    }
+```
+ > Commit et push sur notre repository GIT.
