@@ -169,3 +169,17 @@ public function getFull()
     }
 ```
  > Commit et push sur notre repository GIT.
+
+# GESTION DES ADRESSES DE LIVRAISON:
+ - On créé une nouvelle entité Address et un nouveau AccountAddressController à l'aide du terminal.
+ - On supprime account_address dans templates pour plutôt créer une vue `address.html.twig` dans le dossier templates/account. Dans le même dossier, on crée aussi un fichier `form_address.html.twig` pour permettre à l'utilisateur d'ajouter/modifier une nouvelle adresse.
+ - Dans `form_address.html.twig` on a besoin d'un formulaire AddressType.php, que l'on créé à l'aide du terminal avec `symfony console make:form` relié à l'entité Address.
+
+# GESTION DES COMMANDES:
+ - On créé une nouvelle entité Carrier qui représentera notre transporteur, et un nouveau CarrierCrudController à l'aide du terminal.
+ - On créé aussi deux nouvelles entités Order (infos de base de notre commande - utilisateur lié, transporteur, date de livraison...) et OrderDetails (détails de la commande - panier, produits, quantités, total...).
+ - **Tunnel d'achat:**
+    1. Nouveau OrderController: récapitulatif et validation de la commande.
+    2. Nouveau OrderType: formulaire permettant à l'utilisateur d'insérer ses données (adresse, etc.), ainsi que de choisir son transporteur.
+    3. Paiement: Prochaine section!
+    > Commit et push sur notre repository GIT.

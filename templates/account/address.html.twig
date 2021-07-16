@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}The French Boutique - My Addresses
+{% endblock %}
+
+{% block content %}
+	<a href="{{ path('add_account_address') }}" class="btn btn-outline-info btn-sm float-right">Add new address</a>
+	<h1>Welcome to your addresses,
+		{{ app.user.firstname }}</h1><br>
+	<a href="{{ path('account') }}">Return</a>
+	<hr>
+	{% if app.user.addresses|length == 0 %}
+		<p class="text-center">
+			You still haven't added any address to your account.
+			<a href="{{ path('add_account_address') }}">Click here</a>
+			to add a new address.
+		</p>
+	{% else %}
+		<div class="row">
+			{% for address in app.user.addresses %}
+				<div class="col-md-4">
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">{{ address.name }}</h5>
+							<p class="card-text">{{ address.address }},
+								<br>
+								{{ address.postal }}
+								-
+								{{ address.city }}
+								-
+								{{ address.country }}
+							</p>
+							<a href="{{ path('edit_account_address', { 'id': address.id }) }}">Edit</a>
+							|
+							<a href="{{ path('delete_account_address', { 'id': address.id }) }}">Delete</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
+
+
+{% endblock %}

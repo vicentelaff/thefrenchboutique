@@ -42,7 +42,7 @@
 							</a>
 						</td>
 						<td>{{ product.product.price / 100 }}€</td>
-						<td>{{ (product.product.price * product.quantity)/ 100 }}€</td>
+						<td>{{ ((product.product.price * product.quantity)/ 100)|number_format(2, ',', '.') }}€</td>
 						<td>
 							<a href="{{ path('delete_product', {'id': product.product.id}) }}">
 								<img src="{{ asset('assets/images/trash.svg') }}" alt="Remove product" height="20px">
@@ -56,8 +56,8 @@
 
 		<div class="text-right mb-5">
 			<b>Total:
-				{{ total / 100 }}€</b>
-			<a href="" class="btn btn-outline-success btn-block text-uppercase mt-3">Confirm cart</a>
+				{{ (total / 100)|number_format(2, ',', '.') }} €</b>
+			<a href="{{ path('order') }}" class="btn btn-outline-success btn-block text-uppercase mt-3">Confirm cart</a>
 		</div>
 	{% else %}
 		<hr>
