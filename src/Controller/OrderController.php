@@ -73,6 +73,8 @@ class OrderController extends AbstractController
 
             // Save order (Order):
             $order = new Order();
+            $reference  = $date->format('dmY').'-'.uniqid();
+            $order->setReference($reference);
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setCarrierName($carriers->getName());
@@ -81,6 +83,7 @@ class OrderController extends AbstractController
             $order->setIsPaid(0);
 
             $this->em->persist($order);
+
 
             // Save products (OrderDetails):
             foreach ($cart->getFull() as $product) {
@@ -91,6 +94,8 @@ class OrderController extends AbstractController
                 $orderDetails->setPrice($product['product']->getPrice());
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
                 $this->em->persist($orderDetails);
+
+
             }
 
             $this->em->flush();
@@ -98,12 +103,11 @@ class OrderController extends AbstractController
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
-                'delivery' => $delivery_content
+                'delivery' => $delivery_content,
+                'reference' => $order->getReference()
             ]);
-
         }
 
         return $this->redirectToRoute('cart');
-
     }
 }

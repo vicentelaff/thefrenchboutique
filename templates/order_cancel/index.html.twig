@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Payment error - The French Boutique
+{% endblock %}
+
+{% block content %}
+	<h2>Payment error</h2>
+	<p>Hello
+		<strong>{{ order.user.firstname }}
+			{{ order.user.lastname }}</strong>,<br><br>
+		Seems like your payment failed. Order n°:
+		<strong>{{ order.reference }}</strong>.<br>
+		An e-mail confirming your the payment error has just been sent to
+		<strong>{{ order.user.email }}</strong>.
+
+        <a href="{{ path('order') }}" class="btn btn-success">Try again</a>
+	</p>
+
+{% endblock %}

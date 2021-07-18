@@ -182,4 +182,24 @@ public function getFull()
     1. Nouveau OrderController: récapitulatif et validation de la commande.
     2. Nouveau OrderType: formulaire permettant à l'utilisateur d'insérer ses données (adresse, etc.), ainsi que de choisir son transporteur.
     3. Paiement: Prochaine section!
-    > Commit et push sur notre repository GIT.
+
+> Commit et push sur notre repository GIT.
+
+# PAIEMENT:
+ - On utilise Stripe pour gérer les paiement des utilisateurs (stripe.com/docs/checkout/integration-builder).
+ 1. On installe la librairie Stripe PHP avec `composer.phar require stripe/stripe-php`. 
+ 2. On créé un nouveau `StripeController` contenant notre 'checkout session'.
+ 3. On créé un nouveau `OrderValidateController` contenant la logique pour la page "success" dans le cas ou l'utilisateur complète le paiement avec succès, ainsi qu'un nouveau `OrderCancelController` dans le cas ou il y a un échec de paiement.
+
+    **P.S.:** La redirection vers la page (externe) de paiement stripe ne marche pas (je ne sais pas pourquoi), mais si on regarde dans le dashboard, quand on clique sur le bouton "checkout", ça rajoute bien une nouvelle entrée dans 'Orders'.
+ - On créé un nouveau `AccountOrderController` qui permettra à l'utilisateur de gérer ses commandes.
+
+# E-MAILING:
+ - On utilise l'API MailJet pour gérer les e-mails de notre boutique. On créé donc un compte et un modèle d'e-mail (ID: 3050622) sur leur site. `composer.phar require mailjet/mailjet-apiv3-php`.
+ - Ensuite on créé une nouvelle classe `Mail.php` pour gérer l'envoi de nos mails.
+ - E-mails:
+    1. Confirmation d'inscription: On modifie donc le RegisterController.
+    2. Confirmation d'achat: On modifie donc l'Order    ValidateController.
+
+> Commit et push sur notre repository GIT.
+ 

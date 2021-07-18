@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Classes\Mail;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +17,8 @@ class RegisterController extends AbstractController
 
     private $em;
 
-    public function __construct(EntityManagerInterface $em){
+    public function __construct(EntityManagerInterface $em)
+    {
         $this->em = $em;
     }
 
@@ -28,21 +30,36 @@ class RegisterController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
+            $notification = null;
             $user = $form->getData();
 
-            $password = $encoder->encodePassword($user, $user->getPassword());
+            $search_email = $this->em->getRepository(User::class)->findOneBy(array('email' => $user->getEmail()));
 
-            $user->setPassword($password);
+            if (!$search_email) {
+                $password = $encoder->encodePassword($user, $user->getPassword());
 
-            $this->em->persist($user);
-            $this->em->flush();
+                $user->setPassword($password);
 
+                $this->em->persist($user);
+                $this->em->flush();
+
+
+                // Send confirmation e-mail:
+                $mail = new Mail();
+                $content = "Bonjour " . $user->getFirstname() . "<br/>Welcome to the first e-shop 100% Made in France.<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin condimentum sapien, non iaculis metus accumsan et. Aliquam nec justo in metus venenatis porta. Fusce mollis lorem id nisi sodales accumsan. Suspendisse massa dui, dapibus a est a, malesuada pulvinar magna. Pellentesque in velit augue. Integer aliquet venenatis faucibus. Nunc vitae feugiat enim, quis fermentum ipsum.";
+                $mail->send($user->getEmail(), $user->getFirstname(), 'Welcome to The French Boutique', $content);
+
+                $notification = "Your account has been created successfully.";
+            } else {
+                $notification = "The e-mail provided already has an existing account.";
+            }
         }
 
 
         return $this->render('register/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'notification' => $notification
         ]);
     }
 }

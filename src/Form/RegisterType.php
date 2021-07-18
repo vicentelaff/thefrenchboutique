@@ -43,7 +43,7 @@ class RegisterType extends AbstractType
                 'required' => true,
                 'constraints' => new Length([
                     'min' => 6,
-                    'max' => 30
+                    'max' => 55
                 ]),
                 'first_options' => ['label' => 'Password', 'attr' => [
                     'placeholder' => 'Enter a secure password'

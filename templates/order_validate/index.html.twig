@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Purchase successful - The French Boutique
+{% endblock %}
+
+{% block content %}
+	<h2>Purchase summary</h2>
+	<p>Hello
+		<strong>{{ order.user.firstname }}
+			{{ order.user.lastname }}</strong>,<br><br>
+		Thank you for your purchase. Order n°:
+		<strong>{{ order.reference }}</strong>.<br>
+		An e-mail confirming your purchase has just been sent to
+		<strong>{{ order.user.email }}</strong>.
+		<hr>
+		Your order will be delivered by
+		<strong>{{ order.carrierName }}</strong>
+		to the following address:
+		<br>
+		{{ order.delivery|raw }}
+        <hr>
+        To track your order, go to <a href="{{ path('account_orders') }}">your account</a>.
+	</p>
+
+{% endblock %}
