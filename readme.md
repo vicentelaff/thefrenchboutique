@@ -267,3 +267,7 @@ ChoiceField::new('state')->setChoices([
     2. On modifie le HomeController ainsi que le fichier `base.html.twig` afin d'afficher les images et textes correspondant dans notre page d'accueil.
 
 - Gestion des pages "erreur": Un seul fichier pour toutes les erreurs (voir `templates\bundles\TwigBundle\Exception\error.html.twig`).
+
+# DÉPLOIEMENT:
+- Le projet est sur: https://the-french-boutique.herokuapp.com/
+**P.S.:** Malheureusement je n'ai pas su résoudre l'erreur 500 qui se produit quand on va sur le lien ci-dessus.
