@@ -2,20 +2,35 @@
 
 namespace App\Controller\Admin;
 
+use App\Classes\Mail;
 use App\Entity\Order;
+use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 
 class OrderCrudController extends AbstractCrudController
 {
+    private $em;
+    private $crudUrlGenerator;
+
+    public function __construct(EntityManagerInterface $em, CrudUrlGenerator $crudUrlGenerator)
+    {
+        $this->em = $em;
+        $this->crudUrlGenerator = $crudUrlGenerator;
+    }
+
+
     public static function getEntityFqcn(): string
     {
         return Order::class;
@@ -23,27 +38,70 @@ class OrderCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $updatePreparation = Action::new('updatePreparation', 'Preparing order', 'fas fa-box-open')->linkToCrudAction('updatePreparation');
+        $updateDelivery = Action::new('updateDelivery', 'Order dispatched', 'fas fa-truck')->linkToCrudAction('updateDelivery');
+
         return $actions
+            ->add('detail', $updatePreparation)
+            ->add('detail', $updateDelivery)
             ->add('index', 'detail');
+    }
+
+    public function updatePreparation(AdminContext $context)
+    {
+        $order = $context->getEntity()->getInstance();
+        $order->setState(2);
+        $this->em->flush();
+
+        $this->addFlash('notice', "<span style='color:green;'><strong>Your order ".$order->getReference()." is <u>being prepared</u> by our team.</strong></span>");
+
+        $url = $this->crudUrlGenerator->build()
+            ->setController(OrderCrudController::class)
+            ->setAction('index')
+            ->generateUrl();
+
+
+        return $this->redirect($url);
+    }
+
+    public function updateDelivery(AdminContext $context)
+    {
+        $order = $context->getEntity()->getInstance();
+        $order->setState(3);
+        $this->em->flush();
+
+        $this->addFlash('notice', "<span style='color:orange;'><strong>Your order ".$order->getReference()." <u>has been dispatched successfully</u>.</strong></span>");
+
+        $url = $this->crudUrlGenerator->build()
+            ->setController(OrderCrudController::class)
+            ->setAction('index')
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud->setDefaultSort(['id' => 'DESC']);
     }
-    
+
     public function configureFields(string $pageName): iterable
     {
         return [
             IdField::new('id'),
-            DateTimeField::new('createdAt', 'Order date:'),
+            DateTimeField::new('createdAt', 'Order date'),
             TextField::new('user.fullname', 'User'),
-            MoneyField::new('total', 'Products subtotal')->setCurrency('EUR'),
+            TextEditorField::new('delivery', 'Delivery address'),
+            MoneyField::new('total', 'Products subtotal')->setCurrency('EUR')->onlyOnDetail(),
             TextField::new('carrierName', 'Carrier service'),
             MoneyField::new('carrierPrice', 'Delivery fee')->setCurrency('EUR'),
-            BooleanField::new('isPaid', 'Paid'),
+            ChoiceField::new('state')->setChoices([
+                'Not paid' => 0,
+                "Paid" => 1,
+                "Preparing order" => 2,
+                "Shipping in progress" => 3,
+            ]),
             ArrayField::new('orderDetails', 'Order details')->hideOnIndex(),
         ];
     }
-    
 }

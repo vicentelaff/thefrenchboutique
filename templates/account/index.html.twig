@@ -4,10 +4,31 @@
 {% endblock %}
 
 {% block content %}
-	<h1>Welcome to your account, {{ app.user.firstname }}</h1>
-    <hr>
-    - <a href="{{ path('account_password') }}">Change password</a> <br>
-    - <a href="{{ path('account_address') }}">Manage addresses</a><br>
-    - <a href="{{ path('account_orders') }}">My orders</a><br>
-    <hr>
+	<h1>Welcome to your account,
+		{{ app.user.firstname }}</h1>
+	{% if is_granted('ROLE_ADMIN') %}
+		<small>
+			<a href="/admin">Admin back-office</a>
+			<br>
+		</small>
+	{% endif %}
+	<hr>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="account-item text-center">
+				<img src="{{ asset('assets/images/address.svg') }}" class="mb-2" alt="Manage addresses" height="36px"><br>
+				<a href="{{ path('account_address') }}">Manage addresses</a><br>
+
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="account-item text-center">
+				<img src="{{ asset('assets/images/shopping-bag.svg') }}" class="mb-2" alt="My orders" height="36px"><br>
+				<a href="{{ path('account_orders') }}">My orders</a><br>
+
+			</div>
+		</div>
+	</div>
+
+	<hr>
 {% endblock %}

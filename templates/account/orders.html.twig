@@ -17,6 +17,7 @@
 			<thead>
 				<tr>
 					<th scope="col">Order n°</th>
+					<th scope="col">Status</th>
 					<th scope="col">Date</th>
 					<th scope="col">Products</th>
 					<th scope="col">Total</th>
@@ -28,6 +29,15 @@
 					<tr>
 						<td>
 							<span class="badge badge-secondary">{{ order.reference }}</span>
+						</td>
+						<td>
+							{% if order.state == 1 %}
+								Payment successful.
+							{% elseif order.state == 2 %}
+								Order being prepared.
+							{% elseif order.state == 3 %}
+								Order dispatched to the carrier.
+							{% endif %}
 						</td>
 						<td>{{ order.createdAt|date('d/m/Y') }}</td>
 						<td>{{ order.orderDetails|length }}</td>

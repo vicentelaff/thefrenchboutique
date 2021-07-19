@@ -8,6 +8,15 @@
 		{{ order.reference }}</h1><br>
 	<a href="{{ path('account_orders') }}">Return</a>
 	<hr>
+	<strong>Order status: </strong>
+	{% if order.state == 1 %}
+		Payment successful.
+	{% elseif order.state == 2 %}
+		Order being prepared.
+	{% elseif order.state == 3 %}
+		Order dispatched to the carrier.
+	{% endif %}
+	<br>
 	<strong>Date:</strong>
 	{{ order.createdAt|date('d/m/Y') }}<br>
 	<strong>Reference:</strong>
@@ -40,9 +49,12 @@
 		</tbody>
 	</table>
 
-  <div class="text-right">
-    <strong>Subtotal:</strong> {{ (order.getTotal / 100)|number_format(2, ',', '.') }}€<br>
-    <strong>Shipping:</strong> {{ (order.carrierPrice / 100)|number_format(2, ',', '.') }}€<br>
-    <strong>Total:</strong> {{ ((order.carrierPrice + order.getTotal) / 100)|number_format(2, ',', '.') }}€
-  </div>
+	<div class="text-right">
+		<strong>Subtotal:</strong>
+		{{ (order.getTotal / 100)|number_format(2, ',', '.') }}€<br>
+		<strong>Shipping:</strong>
+		{{ (order.carrierPrice / 100)|number_format(2, ',', '.') }}€<br>
+		<strong>Total:</strong>
+		{{ ((order.carrierPrice + order.getTotal) / 100)|number_format(2, ',', '.') }}€
+	</div>
 {% endblock %}

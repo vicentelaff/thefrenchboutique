@@ -25,13 +25,14 @@ class RegisterController extends AbstractController
     #[Route('/signup', name: 'signup')]
     public function index(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
+        $notification = null;
+
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $notification = null;
             $user = $form->getData();
 
             $search_email = $this->em->getRepository(User::class)->findOneBy(array('email' => $user->getEmail()));

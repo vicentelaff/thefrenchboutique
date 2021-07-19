@@ -28,12 +28,12 @@ class OrderValidateController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        if (!$order->getIsPaid()) {
+        if ($order->getState() == 0) {
             // Emptying the "cart" session:
             $cart->remove();
 
             // Change "isPaid" status to true:
-            $order->setIsPaid(1);
+            $order->setState(1);
             $this->em->flush();
 
             // Send a confirmation e-mail to the user:
